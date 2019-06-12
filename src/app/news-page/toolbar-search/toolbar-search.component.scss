@@ -1,0 +1,10 @@
+.container{
+  display: flex;
+  align-items: stretch;
+}
+.item {
+  flex: 1 1 auto;
+}
+.container .item:first-child, .container .item:last-child{
+  flex: 0 1 auto;
+}
