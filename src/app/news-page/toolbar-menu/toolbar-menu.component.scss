@@ -9,4 +9,7 @@
 .container .item:first-child{
   flex: 0 1 auto;
 }
-app-name{}
+h1.app-name {
+  margin-left: 0.5rem;
+}
+

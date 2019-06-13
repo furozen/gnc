@@ -8,15 +8,29 @@
   right: 0;
 }
 
+.toolbar,
+.toolbar-menu,
+.toolbar-search,
+.toolbar-settings
+{
+  display: flex;
+}
+
+.toolbar{
+  justify-content: space-between;
+}
+.toolbar-search {
+  flex: 2 2 auto;
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
 .is-mobile .toolbar {
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
 }
 
-h1.app-name {
-  margin-left: 8px;
-}
 
 .sidenav-container {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
@@ -30,4 +44,15 @@ h1.app-name {
   flex: 1 0 auto;
 }
 
+section.main-column{
+  padding: 1rem;
+}
 
+.news-cards img{
+  width: auto;
+  max-height: 15rem;
+}
+.news-cards{
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}

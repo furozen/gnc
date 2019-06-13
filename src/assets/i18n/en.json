@@ -1,0 +1,22 @@
+{
+  "TEST": "testing translate",
+  "NP": {
+    "TITLE": "News aggregator",
+    "LANG": "Language ({{lang}})",
+    "LANGS":{
+      "EN": "english",
+      "RU": "русский"
+    },
+    "Sections":{
+      "MainMenu":"Main news",
+      "ForYou":"For you",
+      "Favorite": "Favorite",
+      "Saved": "Saved"
+    }
+
+  },
+  "HOME": {
+    "TITLE": "Hello Angular with ngx-translate!",
+    "SELECT": "Change language"
+  }
+}

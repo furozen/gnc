@@ -1,3 +1,10 @@
 <div class="container">
-  <button mat-icon-button><mat-icon>settings-applications</mat-icon></button>
+  <button mat-icon-button [matMenuTriggerFor]="settings"><mat-icon>settings-applications</mat-icon></button>
+  <mat-menu #settings="matMenu">
+    <button mat-menu-item [matMenuTriggerFor]="langs" translate [translateParams]="{lang: translate.currentLang}">NP.LANG</button>
+  </mat-menu>
+
+  <mat-menu #langs="matMenu">
+    <button *ngFor="let lang of translate.getLangs()" mat-menu-item translate (click)="translate.use(lang)">NP.LANGS.{{lang | uppercase }}</button>
+  </mat-menu>
 </div>
