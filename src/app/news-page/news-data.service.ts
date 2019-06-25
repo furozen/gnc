@@ -1,85 +1,17 @@
-import { Injectable } from '@angular/core';
-import {from, Observable, of} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {from, Observable} from 'rxjs';
+import {filter} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
-
-export enum ENewsSection {
-  main = 'main',
-  common = 'common'
-}
+import {NewsPageDataModelService} from './news-page-data-model.service';
+import {ENewsSection, INewsItems} from './TypeDefenition';
 
 
-export interface INewsItems {
-  icon: string;
-  section: string|ENewsSection;
-  title: string;
-  resourse: {
-    path?: string,
-    route: string,
-    newsApi?: {
-      query?: {[lang: string]: string},
-      date: string,
-    }
-  };
-}
-const today = new Date();
-const newsApiUrl = 'https://newsapi.org/v2/everything?q={{query}}&from={{date}}&sortBy=publishedAt&apiKey=55316696fe264d498866af7ba652cf65';
-const testData: INewsItems[] = [
-  {
-    icon: 'dvr',
-    title: 'NP.Sections.MainMenu',
-    section: ENewsSection.main,
-    resourse: {
-      newsApi: {
-        date: today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate(),
-        query: {
-          ru: 'главные',
-          en: 'breaking news'
-        }
-      },
-      route: 'news/main'
-    }
-  },
-  {
-    icon: 'person',
-    title: 'NP.Sections.ForYou',
-    section: ENewsSection.main,
-    resourse: {
-      path: 'lenta.ru',
-      route: 'news/personalise'
-    }
-  },
-  {
-    icon: 'star_border',
-    title: 'NP.Sections.Favorite',
-    section: ENewsSection.main,
-    resourse: {
-      path: 'lenta.ru',
-      route: 'news/favorite'
-    }
-  },
-
-  {
-    icon: 'search',
-    title: 'NP.Sections.Saved',
-    section: ENewsSection.main,
-    resourse: {
-      path: 'lenta.ru',
-      route: 'news/saved'
-    }
-  }
-
-];
-
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NewsDataService {
   private data: Observable<INewsItems>;
-  constructor(private httpClient: HttpClient, private translateService: TranslateService) {
-    this.data = from(testData);
+  constructor(private httpClient: HttpClient, private translateService: TranslateService, private dataModel: NewsPageDataModelService) {
+    this.data = from(this.dataModel.getNewDescriptions());
   }
 
   getMainTitleSectionsItems(): Observable<INewsItems> {
@@ -87,12 +19,13 @@ export class NewsDataService {
   }
 
   getNews(route: string = 'news/main') {
-    const item = testData[0];
+    const item = this.dataModel.getNewDescriptions().filter(data => data.resourse.route === route)[0];
+    // todo catch error
     const newsApiElement = item.resourse.newsApi.query[this.translateService.currentLang];
-    console.log('item.resourse.newsApi:', item.resourse.newsApi)
-    console.log(`item.resourse.newsApi[${this.translateService.currentLang}]:`, item.resourse.newsApi.query[this.translateService.currentLang])
-    let url = newsApiUrl.replace('{{query}}',
-      newsApiElement ? newsApiElement : item.resourse.newsApi.query['en']);
+    console.log('item.resourse.newsApi:', item.resourse.newsApi);
+    console.log(`item.resourse.newsApi[${this.translateService.currentLang}]:`, item.resourse.newsApi.query[this.translateService.currentLang]);
+    let url = this.dataModel.getNewApiUrl().replace('{{query}}',
+      newsApiElement ? newsApiElement : item.resourse.newsApi.query.en);
     url = url.replace('{{date}}', item.resourse.newsApi.date);
     return this.httpClient.get(url);
   }

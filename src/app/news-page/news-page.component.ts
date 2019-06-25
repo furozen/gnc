@@ -1,7 +1,9 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
-import {INewsItems, NewsDataService} from './news-data.service';
+import {NewsDataService} from './news-data.service';
 import {TranslateService} from '@ngx-translate/core';
+import {INewsItems} from './TypeDefenition';
+import {NewsPageDataModelService} from './news-page-data-model.service';
 
 export interface Tile {
   color: string;
@@ -13,7 +15,8 @@ export interface Tile {
 @Component({
   selector: 'app-news-page',
   templateUrl: './news-page.component.html',
-  styleUrls: ['./news-page.component.scss']
+  styleUrls: ['./news-page.component.scss'],
+  providers: [NewsPageDataModelService, NewsDataService]
 })
 export class NewsPageComponent implements OnInit {
   mobileQuery: MediaQueryList;
